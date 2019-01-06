@@ -1,0 +1,58 @@
+import React from 'react';
+import firebase from 'firebase';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Button
+} from 'react-native';
+
+
+export default class Route extends React.Component {
+    componentWillMount() {
+        var config = {
+            apiKey: "AIzaSyCz7CA-b-vYUuK2IMM8-6V917v-2t7j_0o",
+            authDomain: "configuracaofirebasereac-9cfe0.firebaseapp.com",
+            databaseURL: "https://configuracaofirebasereac-9cfe0.firebaseio.com",
+            projectId: "configuracaofirebasereac-9cfe0",
+            storageBucket: "configuracaofirebasereac-9cfe0.appspot.com",
+            messagingSenderId: "416651477909"
+        };
+
+        firebase.initializeApp(config);
+
+    }
+
+    salvarDados() {
+        var database = firebase.database();
+        database.ref('pontuacao').set('200');
+    }
+
+    removerDados() {
+        var database = firebase.database();
+        database.ref('pontuacao').remove();
+    }
+
+    render() {
+        return (
+            <View>
+                <Text>Bot�o salvarDados</Text>
+                <Button
+                    onPress={ () => {this.salvarDados(); }}
+                    title='Salvar dados'
+                    color='#f15625'
+                    accessibilityLabel='Salvar dados'
+                />
+
+                <Text>Bot�o remover Dados</Text>
+                <Button
+                    onPress={ () => {this.removerDados(); }}
+                    title='Remover dados'
+                    color='#f15625'
+                    accessibilityLabel='Remover dados'
+                />
+            </View>
+        );
+    }
+}
+
