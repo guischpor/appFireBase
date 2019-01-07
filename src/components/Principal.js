@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 
-export default class Route extends React.Component {
+export default class Principal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

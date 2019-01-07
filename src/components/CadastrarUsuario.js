@@ -10,13 +10,12 @@ import {
 } from 'react-native';
 import Toast from 'react-native-root-toast'
 
-export default class Cadastrar extends React.Component {
+export default class CadastrarUsuario extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nome: '',
-            profissao: '',
-            empresa: ''
+            email: '',
+            pass: '',
         }
     }
 
@@ -34,13 +33,33 @@ export default class Cadastrar extends React.Component {
 
     }
     cadastrarUsuario() {
-        if (this.state.nome.length > 0 && this.state.profissao.length > 0 && this.state.empresa.length > 0) {
-            var usuarios = firebase.database().ref('usuarios');
-            usuarios.push().set(
-                {
-                    nome: this.state.nome,
-                    profissao: this.state.profissao,
-                    empresa: this.state.empresa
+        var email = this.state.email;
+        var senha = this.state.pass;
+
+        if (email.length > 0 && senha.length > 0) {
+            const usuario = firebase.auth();
+            usuario.createUserWithEmailAndPassword (
+                email,
+                senha
+            ).catch(
+                //erro.code, erro.message
+                (error) => {
+                    var mensagemErro = '';
+                    if ( error.code === 'auth/weak-password' ) {
+                        mensagemErro = 'A senha precisa ter no mínimo 6 caracteres.';
+                    }
+                    let toast = Toast.show(mensagemErro, {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: false,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        backgroundColor: '#e51f1c',
+                    });
+                    setTimeout(function () {
+                        Toast.hide(toast);
+                    }.bind(this), 2000);
                 }
             );
         } else {
@@ -60,40 +79,30 @@ export default class Cadastrar extends React.Component {
         }
     }
 
-    limparCampos() {
-        this.setState({
-            nome: '',
-            profissao: '',
-            empresa: ''
-        })
-    }
-
     render() {
         return (
             <View style={styles.containerView}>
                 <Text style={styles.txtTitle}>Cadastrar Usuário</Text>
                 <TextInput
-                    placeholder='Nome'
-                    value={this.state.nome}
+                    placeholder='Username'
+                    value={this.state.email}
                     style={styles.inputTxt}
-                    onChangeText={(nome) => this.setState({nome: nome})}
+                    onChangeText={(email) => this.setState({email: email})}
+                    autoCapitalize='none'
                 />
                 <TextInput
-                    placeholder='Profissão'
-                    value={this.state.profissao}
+                    placeholder='Password'
+                    value={this.state.pass}
                     style={styles.inputTxt}
-                    onChangeText={(profissao) => this.setState({profissao: profissao})}
-                />
-                <TextInput
-                    placeholder='Empresa'
-                    value={this.state.empresa}
-                    style={styles.inputTxt}
-                    onChangeText={(empresa) => this.setState({empresa: empresa})}
+                    onChangeText={(pass) => this.setState({pass: pass})}
+                    secureTextEntry={true}
+                    autoCapitalize='none'
                 />
                 <View style={styles.Cadastra}>
                     <TouchableHighlight
                             underlayColor={'#057e31'}
                             activeOpacity={0.3}
+                            //onPress={ () => {this.cadastrarUsuario() }}
                             onPress={ () => {this.cadastrarUsuario() }}
                             style={{
                                 borderRadius: 30,
@@ -108,38 +117,14 @@ export default class Cadastrar extends React.Component {
                                     fontWeight: 'bold',
                                     fontSize: 18,
                                     padding: 10,
-                                    width: 200,
+                                    width: 300,
                                 }}
                             >
-                                    CADASTRAR
+                                    CADASTRAR USUÁRIO
                             </Text>
                     </TouchableHighlight>
                 </View>
-                <View style={styles.btnLimpa}>
-                    <TouchableHighlight
-                            underlayColor={'#e51f1c'}
-                            activeOpacity={0.3}
-                            onPress={ () => {this.limparCampos() }}
-                            style={{
-                                borderRadius: 30,
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    textAlign:'center',
-                                    backgroundColor: '#e51f1c',
-                                    borderRadius: 30,
-                                    color: '#fff',
-                                    fontWeight: 'bold',
-                                    fontSize: 18,
-                                    padding: 10,
-                                    width: 200,
-                                }}
-                            >
-                                    LIMPAR CAMPOS
-                            </Text>
-                    </TouchableHighlight>
-                </View>
+
             </View>
         );
     }
@@ -154,7 +139,7 @@ const styles = StyleSheet.create ({
 
     txtTitle: {
         marginTop: 10,
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold'
     },
 
@@ -169,10 +154,6 @@ const styles = StyleSheet.create ({
         marginTop: 10,
         marginBottom: 20,
         borderRadius: 10
-    },
-
-    btnLimpa: {
-        marginTop: 10
     },
 
     Cadastra: {
