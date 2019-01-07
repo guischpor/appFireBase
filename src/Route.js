@@ -8,7 +8,7 @@ import CadastrarUsuario from './components/CadastrarUsuario';
 export default class Route extends React.Component {
     render() {
         return (
-            <CadastrarUsuario />
+            <Cadastrar />
         );
     }
 }
