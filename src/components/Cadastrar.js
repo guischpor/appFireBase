@@ -34,7 +34,10 @@ export default class Cadastrar extends React.Component {
 
     }
     cadastrarUsuario() {
-        if (this.state.nome.length > 0 && this.state.profissao.length > 0 && this.state.empresa.length > 0) {
+        if (
+            this.state.nome.length > 0 &&
+            this.state.profissao.length > 0 &&
+            this.state.empresa.length > 0) {
             var usuarios = firebase.database().ref('usuarios');
             usuarios.push().set(
                 {
