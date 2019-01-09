@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Toast from 'react-native-root-toast'
 
-export default class Login extends React.Component {
+export default class VerificarUsuario extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,13 +32,42 @@ export default class Login extends React.Component {
         firebase.initializeApp(config);
 
     }
-    loginUsuario() {
-        if (this.state.login.length > 0 && this.state.pass.length > 0 ) {
-            var login = this.state.login;
-            var pass = this.state.pass;
+    verificaUsuario() {
+        var login = this.state.login;
+        var pass = this.state.pass;
+
+        if (login.length > 0 && pass.length > 0 ) {
 
             const usuario = firebase.auth();
-            
+            const usuarioAtual = usuario.currentUser;
+
+            if ( usuarioAtual ) {
+                let toast = Toast.show('Usuário está logado...', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: false,
+                    animation: true,
+                    hideOnPress: true,
+                    delay: 0,
+                    backgroundColor: '#e51f1c',
+                });
+                setTimeout(function () {
+                    Toast.hide(toast);
+                }.bind(this), 2000);
+            } else {
+                let toast = Toast.show('Usuário não está logado...', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: false,
+                    animation: true,
+                    hideOnPress: true,
+                    delay: 0,
+                    backgroundColor: '#e51f1c',
+                });
+                setTimeout(function () {
+                    Toast.hide(toast);
+                }.bind(this), 2000);
+            }
         } else {
             let toast = Toast.show('Por favor, Preencha todos os campos...', {
                 duration: Toast.durations.SHORT,
@@ -59,7 +88,7 @@ export default class Login extends React.Component {
     render() {
         return (
             <View style={styles.containerView}>
-                <Text style={styles.txtTitle}>Login</Text>
+                <Text style={styles.txtTitle}>Verificar Usuário</Text>
                 <TextInput
                     placeholder='Username'
                     value={this.state.login}
@@ -79,7 +108,7 @@ export default class Login extends React.Component {
                     <TouchableHighlight
                             underlayColor={'#057e31'}
                             activeOpacity={0.3}
-                            onPress={ () => {this.loginUsuario() }}
+                            onPress={ () => {this.verificaUsuario() }}
                             style={{
                                 borderRadius: 30,
                             }}
@@ -93,10 +122,10 @@ export default class Login extends React.Component {
                                     fontWeight: 'bold',
                                     fontSize: 18,
                                     padding: 10,
-                                    width: 200,
+                                    width: 220,
                                 }}
                             >
-                                    SIGN IN
+                                    VERIFICAR USUÁRIO
                             </Text>
                     </TouchableHighlight>
                 </View>
