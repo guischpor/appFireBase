@@ -32,13 +32,49 @@ export default class Login extends React.Component {
         firebase.initializeApp(config);
 
     }
+
+    verificaUsuario() {
+        const usuario = firebase.auth();
+        usuario.onAuthStateChanged(
+            (usuarioAtual) => {
+                if ( usuarioAtual ) {
+                    let toast = Toast.show('Usuário está logado...', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: false,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        backgroundColor: '#e51f1c',
+                    });
+                } else {
+                    let toast = Toast.show('Usuário não está logado...', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: false,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        backgroundColor: '#e51f1c',
+                    });
+                }
+            }
+        );
+    }
+
     loginUsuario() {
-        if (this.state.login.length > 0 && this.state.pass.length > 0 ) {
-            var login = this.state.login;
-            var pass = this.state.pass;
+
+        const {login, pass} = this.state;
+
+        if (login.length > 0 && pass.length > 0 ) {
 
             const usuario = firebase.auth();
-            
+            usuario.signInWithEmailAndPassword(
+                login,
+                pass
+            );
+            this.verificaUsuario();
+
         } else {
             let toast = Toast.show('Por favor, Preencha todos os campos...', {
                 duration: Toast.durations.SHORT,
@@ -49,11 +85,13 @@ export default class Login extends React.Component {
                 delay: 0,
                 backgroundColor: '#e51f1c',
             });
-
-            setTimeout(function () {
-                Toast.hide(toast);
-            }.bind(this), 2000);
         }
+    }
+
+    logoutUsuario() {
+        const usuario = firebase.auth();
+        usuario.signOut();
+        this.verificaUsuario();
     }
 
     render() {
@@ -100,6 +138,31 @@ export default class Login extends React.Component {
                             </Text>
                     </TouchableHighlight>
                 </View>
+                <View style={styles.btnLogout}>
+                    <TouchableHighlight
+                            underlayColor={'#e51f1c'}
+                            activeOpacity={0.3}
+                            onPress={ () => {this.logoutUsuario() }}
+                            style={{
+                                borderRadius: 30,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    textAlign:'center',
+                                    backgroundColor: '#e51f1c',
+                                    borderRadius: 30,
+                                    color: '#fff',
+                                    fontWeight: 'bold',
+                                    fontSize: 18,
+                                    padding: 10,
+                                    width: 200,
+                                }}
+                            >
+                                    LOGOUT
+                            </Text>
+                    </TouchableHighlight>
+                </View>
 
             </View>
         );
@@ -130,6 +193,10 @@ const styles = StyleSheet.create ({
         marginTop: 10,
         marginBottom: 20,
         borderRadius: 10
+    },
+
+    btnLogout: {
+        marginTop: 10
     },
 
     Cadastra: {

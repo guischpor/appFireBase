@@ -33,41 +33,37 @@ export default class VerificarUsuario extends React.Component {
 
     }
     verificaUsuario() {
-        var login = this.state.login;
-        var pass = this.state.pass;
+        const {login, pass} = this.state;
 
         if (login.length > 0 && pass.length > 0 ) {
 
             const usuario = firebase.auth();
-            const usuarioAtual = usuario.currentUser;
 
-            if ( usuarioAtual ) {
-                let toast = Toast.show('Usuário está logado...', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.CENTER,
-                    shadow: false,
-                    animation: true,
-                    hideOnPress: true,
-                    delay: 0,
-                    backgroundColor: '#e51f1c',
-                });
-                setTimeout(function () {
-                    Toast.hide(toast);
-                }.bind(this), 2000);
-            } else {
-                let toast = Toast.show('Usuário não está logado...', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.CENTER,
-                    shadow: false,
-                    animation: true,
-                    hideOnPress: true,
-                    delay: 0,
-                    backgroundColor: '#e51f1c',
-                });
-                setTimeout(function () {
-                    Toast.hide(toast);
-                }.bind(this), 2000);
-            }
+            usuario.onAuthStateChanged(
+                (usuarioAtual) => {
+                    if ( usuarioAtual ) {
+                        let toast = Toast.show('Usuário está logado...', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.CENTER,
+                            shadow: false,
+                            animation: true,
+                            hideOnPress: true,
+                            delay: 0,
+                            backgroundColor: '#e51f1c',
+                        });
+                    } else {
+                        let toast = Toast.show('Usuário não está logado...', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.CENTER,
+                            shadow: false,
+                            animation: true,
+                            hideOnPress: true,
+                            delay: 0,
+                            backgroundColor: '#e51f1c',
+                        });
+                    }
+                }
+            );
         } else {
             let toast = Toast.show('Por favor, Preencha todos os campos...', {
                 duration: Toast.durations.SHORT,
@@ -78,10 +74,6 @@ export default class VerificarUsuario extends React.Component {
                 delay: 0,
                 backgroundColor: '#e51f1c',
             });
-
-            setTimeout(function () {
-                Toast.hide(toast);
-            }.bind(this), 2000);
         }
     }
 
