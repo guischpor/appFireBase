@@ -56,10 +56,6 @@ export default class Cadastrar extends React.Component {
                 delay: 0,
                 backgroundColor: '#e51f1c',
             });
-
-            setTimeout(function () {
-                Toast.hide(toast);
-            }.bind(this), 2000);
         }
     }
 

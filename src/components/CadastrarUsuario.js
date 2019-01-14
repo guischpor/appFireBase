@@ -8,7 +8,10 @@ import {
     TextInput,
     TouchableHighlight
 } from 'react-native';
-import Toast from 'react-native-root-toast'
+import Toast from 'react-native-root-toast';
+import {
+    firebaseConfig
+} from '../actions/MainActions';
 
 export default class CadastrarUsuario extends React.Component {
     constructor(props) {
@@ -20,16 +23,18 @@ export default class CadastrarUsuario extends React.Component {
     }
 
     componentWillMount() {
-        var config = {
-            apiKey: "AIzaSyCz7CA-b-vYUuK2IMM8-6V917v-2t7j_0o",
-            authDomain: "configuracaofirebasereac-9cfe0.firebaseapp.com",
-            databaseURL: "https://configuracaofirebasereac-9cfe0.firebaseio.com",
-            projectId: "configuracaofirebasereac-9cfe0",
-            storageBucket: "configuracaofirebasereac-9cfe0.appspot.com",
-            messagingSenderId: "416651477909"
-        };
+        // var config = {
+        //     apiKey: "AIzaSyCz7CA-b-vYUuK2IMM8-6V917v-2t7j_0o",
+        //     authDomain: "configuracaofirebasereac-9cfe0.firebaseapp.com",
+        //     databaseURL: "https://configuracaofirebasereac-9cfe0.firebaseio.com",
+        //     projectId: "configuracaofirebasereac-9cfe0",
+        //     storageBucket: "configuracaofirebasereac-9cfe0.appspot.com",
+        //     messagingSenderId: "416651477909"
+        // };
 
-        firebase.initializeApp(config);
+        // firebase.initializeApp(config);
+
+        firebaseConfig();
 
     }
     cadastrarUsuario() {
