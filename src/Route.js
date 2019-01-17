@@ -9,7 +9,7 @@ import VerificarUsuario from './components/VerificarUsuario';
 export default class Route extends React.Component {
     render() {
         return (
-            <Login />
+            <CadastrarUsuario />
         );
     }
 }
